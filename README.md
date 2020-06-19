@@ -22,3 +22,5 @@
   - 流用元
     - [1]機械学習のための特徴量エンジニアリング(Alice Zheng, Amanda Casari 2019年02月)
       - https://github.com/HOXOMInc/feature-engineering-book
+    - [2]データサイエンス100本ノック（構造化データ加工編）
+      - https://github.com/The-Japan-DataScientist-Society/100knocks-preprocess
