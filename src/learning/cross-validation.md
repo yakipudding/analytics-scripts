@@ -1,4 +1,32 @@
-# Kaggleに登録したら次にやること ～ これだけやれば十分闘える！Titanicの先へ行く入門 10 Kernel ～より
+# データ分割
+## train_test_split
+```py
+from sklearn.model_selection import train_test_split
+## stratifyはtrainとtestで割合を同じにしたい列。正解ラベルなど。
+## random_stateはシード値
+df_train, df_test = train_test_split(df_customer, test_size=0.1, stratify=df_customer['gender'])
+
+# アンダーサンプリング：数が少ない方にあわせてサンプリング
+#unbalancedのubUnderを使った例
+df_tmp = df_receipt.groupby('customer_id').agg({'amount':'sum'}).reset_index()
+df_tmp = pd.merge(df_customer, df_tmp, how='left', on='customer_id')
+df_tmp['buy_flg'] = df_tmp['amount'].apply(lambda x: 0 if np.isnan(x) else 1)
+
+print('0の件数', len(df_tmp.query('buy_flg == 0')))
+print('1の件数', len(df_tmp.query('buy_flg == 1')))
+
+positive_count = len(df_tmp.query('buy_flg == 1'))
+
+rs = RandomUnderSampler(random_state=71)
+
+df_sample, _ = rs.fit_sample(df_tmp, df_tmp.buy_flg)
+
+print('0の件数', len(df_sample.query('buy_flg == 0')))
+print('1の件数', len(df_sample.query('buy_flg == 1')))
+```
+
+## KFold
+参考：Kaggleに登録したら次にやること ～ これだけやれば十分闘える！Titanicの先へ行く入門 10 Kernel ～より
 ```py
 from sklearn.model_selection import KFold
 import lightgbm as lgb
