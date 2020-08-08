@@ -50,3 +50,19 @@ print('===CV scores===')
 print(scores)
 print(score)
 ```
+
+## ラベルの分布を維持したまま分割する場合はStratifiedKFoldを用いる
+```py
+K = 2 # 2セット
+skf = StratifiedKFold(n_splits=K, random_state=SEED, shuffle=True)
+
+DISASTER = df_train['target'] == 1
+print('Whole Training Set Shape = {}'.format(df_train.shape))
+print('Whole Training Set Unique keyword Count = {}'.format(df_train['keyword'].nunique()))
+print('Whole Training Set Target Rate (Disaster) {}/{} (Not Disaster)'.format(df_train[DISASTER]['target_relabeled'].count(), df_train[~DISASTER]['target_relabeled'].count()))
+
+for fold, (trn_idx, val_idx) in enumerate(skf.split(df_train['text_cleaned'], df_train['target']), 1):
+    print('\nFold {} Training Set Shape = {} - Validation Set Shape = {}'.format(fold, df_train.loc[trn_idx, 'text_cleaned'].shape, df_train.loc[val_idx, 'text_cleaned'].shape))
+    print('Fold {} Training Set Unique keyword Count = {} - Validation Set Unique keyword Count = {}'.format(fold, df_train.loc[trn_idx, 'keyword'].nunique(), df_train.loc[val_idx, 'keyword'].nunique()))    
+
+```

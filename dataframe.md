@@ -2,7 +2,14 @@
 
 ## csv読み込み
 ```py
+## sjisはcp932
+## headなし：header=None 設定する場合はname=headerList: []
 df = pd.read_csv('../../data/test.csv', encoding='utf_8')
+```
+## 書き込み
+```py
+## w:上書 a:追記
+df.to_csv(filename, mode='w', write_header=True, index=False, encoding='utf_8')
 ```
 
 ## 生データ
@@ -109,7 +116,7 @@ df['name'].str[0:3]
 
 ```
 
-## 表示
+## 表示・クエリ
 ```py
 # 列名指定
 df_receipt[['sales_ymd','customer_id','product_cd','amount']]
@@ -138,6 +145,9 @@ df_receipt.groupby('store_cd').agg({'amount':'sum', 'quantity':'sum'}).reset_ind
 df_tmp = df_receipt.groupby('customer_id').agg({'sales_ymd':['max','min']}).reset_index().head(10)
 df_tmp.columns = ["_".join(pair) for pair in df_tmp.columns] #複数関数の場合、列名はpairになっている
 df_tmp.query('sales_ymd_max != sales_ymd_min').head(10)
+
+# Groupで圧縮しない（各行に合計値をセット）：transform
+df_train['target_mean'] = df_train.groupby('keyword')['target'].transform('mean')
 
 # ピボット（クロス集計）
 ## 集計：列

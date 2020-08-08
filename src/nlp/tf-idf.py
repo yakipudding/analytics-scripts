@@ -43,7 +43,7 @@ combined = pd.concat([nightlife_subset, restaurant_subset])
 
 # 学習データとテストデータに分割
 training_data, test_data = train_test_split(combined, test_size=0.3, random_state=123)
-training_data.shape
+training_data.shape ## 行数、列数
 
 # 特徴量変換 ###################################
 

@@ -58,3 +58,13 @@ ax2.set_xlabel('log10(review_count))', fontsize=14)
 ax2.set_ylabel('Occurrence', fontsize=14)
 
 plt.show()
+
+# 4. ヒストグラムに全体の分布を推定した折れ線グラフを表示する場合、sns.distplotを用いる(kde=Falseで消える)
+fig,(ax1,ax2)=plt.subplots(1,2,figsize=(10,5))
+word=tweet[tweet['target']==1]['text'].str.split().apply(lambda x : [len(i) for i in x])
+sns.distplot(word.map(lambda x: np.mean(x)),ax=ax1,color='red')
+ax1.set_title('disaster')
+word=tweet[tweet['target']==0]['text'].str.split().apply(lambda x : [len(i) for i in x])
+sns.distplot(word.map(lambda x: np.mean(x)),ax=ax2,color='green')
+ax2.set_title('Not disaster')
+fig.suptitle('Average word length in each tweet')
