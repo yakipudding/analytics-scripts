@@ -1,23 +1,18 @@
-# sklearn
-sklearnでは、clfで宣言するモデルを切り替えるだけで機械学習アルゴリズムを差し替えられます
-```py
-# 学習定義
-## ロジスティック回帰
-from sklearn.linear_model import LogisticRegression
-clf = LogisticRegression(penalty='l2', solver='sag', random_state=0)
-
-## ランダムフォレスト
-from sklearn.ensemble import RandomForestClassifier
-clf = RandomForestClassifier(n_estimators=100, max_depth=2, random_state=0)
-
-# 学習・予測
-clf.fit(X_train, y_train)
-y_pred = clf.predict(X_test)
-```
-
 # LightGBM
-LightGBMは大量の決定木を作成しながら学習を進めるため、過学習が発生しやすい
-→学習に利用しない検証用のデータに対する性能を見ながら学習を打ち切る「early stopping」を利用する
+LightGBMは大量の決定木を作成しながら学習を進める勾配ブースティング
+
+## 特徴
+- モデル訓練に掛かる時間が短い 
+- メモリ効率が高い 
+  - 計量値をヒストグラムとして扱うのでメモリを抑えることが可能
+- 推測精度が高い 
+  - 同じデータセットに対して他のブースティングの機械学習アルゴリズムと比較した場合、Leaf-Wiseのため推測精度が改善する傾向がある
+  - これはLeaf-Wiseの方がLevel-Wiseと比較して、より複雑な決定木となるため
+- 過学習しやすい 
+  - Leaf-wiseは決定木が複雑になる
+  - つまり、決定木の構造をハイパーパラメータで適切に調整しないと過学習（Overfitting）となる可能性が高いです。
+  - 学習に利用しない検証用のデータに対する性能を見ながら学習を打ち切る「early stopping」を利用する
+- 大規模なデータセットも訓練可能 
 
 ```py
 # 学習用・検証用にデータセットを分割する

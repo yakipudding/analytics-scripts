@@ -6,6 +6,9 @@ from sklearn.model_selection import train_test_split
 ## random_stateはシード値
 df_train, df_test = train_test_split(df_customer, test_size=0.1, stratify=df_customer['gender'])
 
+## X,yそれぞれの場合
+train_X, val_X, train_y, val_y = train_test_split(X,y,test_size=0.1, random_state=1)
+
 # アンダーサンプリング：数が少ない方にあわせてサンプリング
 #unbalancedのubUnderを使った例
 df_tmp = df_receipt.groupby('customer_id').agg({'amount':'sum'}).reset_index()
@@ -93,4 +96,20 @@ for fold, (trn_idx, val_idx) in enumerate(skf.split(df_train['text_cleaned'], df
     print('\nFold {} Training Set Shape = {} - Validation Set Shape = {}'.format(fold, df_train.loc[trn_idx, 'text_cleaned'].shape, df_train.loc[val_idx, 'text_cleaned'].shape))
     print('Fold {} Training Set Unique keyword Count = {} - Validation Set Unique keyword Count = {}'.format(fold, df_train.loc[trn_idx, 'keyword'].nunique(), df_train.loc[val_idx, 'keyword'].nunique()))    
 
+```
+
+## 時系列に並べたい場合(データリーク対応)
+```py
+feature_cols = ['day', 'hour', 'minute', 'second', 
+                'ip_labels', 'app_labels', 'device_labels',
+                'os_labels', 'channel_labels']
+
+valid_fraction = 0.1
+# 時刻列でソート
+df = df_org.sort_values('click_time')
+valid_rows = int(len(df) * valid_fraction)
+train = df[:-valid_rows * 2]
+# valid size == test size, last two sections of the data
+valid = df[-valid_rows * 2:-valid_rows]
+test = df[-valid_rows:]
 ```

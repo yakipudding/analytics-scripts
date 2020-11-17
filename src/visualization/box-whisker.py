@@ -20,3 +20,7 @@ ax.set_ylabel('Accuracy', size=14)
 ax.tick_params(labelsize=14)
 
 plt.show()
+
+# カテゴリ別の散布図でも似たようなことはできる
+sns.swarmplot(x=insurance_data['smoker'],
+              y=insurance_data['charges'])

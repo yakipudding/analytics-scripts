@@ -1,5 +1,6 @@
 # 機械学習のための特徴量エンジニアリングより
 # one-hotエンコーディング/ダミーコーディング
+## カテゴリ値にも
 
 import pandas as pd
 from sklearn import linear_model
